@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>YMkim Django Application</h2>
+    <ul>
+        {% for key, value in verbose_dict.items %}
+            {% with key|add:":"|add:"index" as urlvar %}
+                <li><a href="{% url urlvar %}">{{ value }}</a></li>
+            {% endwith %}
+        {% endfor %}
+    </ul>
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends 'base_polls.html' %}
+
+{% block content %}
+<h1>{{ question.question_text }}</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<!-- url 탬플릿 태그 사용, polls:vote는 URLconf 에서 적은 url 패턴 이름   -->
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    <!--폼을 처리하는 경우, CSRF 공격을 방지하기 위한 기능-->
+    {%csrf_token%}
+    <!--vote() 뷰 함수에서 request.POST['choice'] 구문으로 액세스 할 수 있음-->
+    <!--input 태그의 name, id 속성은 request.POST 사전에서 key, value 로 상돋됨-->
+    {% for choice in question.choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"/>
+        <label for="choice{{ forloop.counter }}">{{choice.choice_text}}</label><br/>
+    {% endfor %}
+    <input type="submit" value = "Vote" />
+</form>
+{% endblock content %}
